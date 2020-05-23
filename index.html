@@ -32,22 +32,76 @@
       <!-- Timeblocks go here -->
     </div>
 
-
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src = "moment.js"></script>
     <script> 
       let now = moment();
       console.log(now);
-  
-      //1. Display current date and time at the top of the calendar
-      //2. create time blocks for each hours between 8 AM - 6 PM
-      //3. timeblocks are color coded depending on whether they are in the past, present or future.
-      //4. have the ability to enter text into timeblock 
-      //5. when text is saved, data persists after page refresh
+
+      //Display current date and time at the top of the calendar
+
+      //how to display in javascript
+      // let header = document.getElementById("currentDay");
+      // header.textContent = now.format('MM-DD-YYYY')
+
+      //how to display using jquery
+      let header = $("#currentDay"); 
+      header.text(now.format('MM-DD-YYYY'));
+
+      
+      //create time blocks for each hours between 9 AM - 5 PM
+      for (let i = 9; i < 18; i++){
+        let row = $("<div>");
+        row.addClass('row').attr('id', 'hour-' + i);
+
+        //creating the hour column to add to the div & applying CSS to style it using classes
+        let hourLine = $("<div>").addClass(['hour','col-md-1']);
+
+        //creating the savebutton column to add to the div & applying CSS to style it using classes
+        let save = $("<div>").addClass(['saveBtn','col-md-1']);
+
+        //creating the textbox column so that we can add text to the calendar & applying CSS style using classes
+        let textBox = $("<textarea>").addClass(['description','col-md-10']);
+
+        //creating an if/else statement to add AM and PM after the times as well as to display the times in the 24-hour style.
+        if (i>12){
+          hourLine.text(i-12 + ' PM');
+        } else if (i===12){
+          hourLine.text(i + ' PM')
+        }else {
+          hourLine.text(i + ' AM')
+        }
+
+        //adding style to rows to indicate whether they are in the past, present or future
+        if (now > i){
+          row.addClass('past');
+        } else if (now < i){
+          row.addClass('future');
+        } else {
+          row.addClass('present');
+        }
+
+        //creating the onclick function to save the text in the textbox
+        save.on('click', function(){
+          let valueTextBox = $(this).siblings('.description').val();
+          let hourId = $(this).parent().attr('id');
+          localStorage.setItem(hourId, valueTextBox);
+        })
+        
+        //displaying the text in the textbox after saving
+        if (localStorage.getItem('hour-' + i) != null){
+          textBox.text(localStorage.getItem('hour-'+i));
+        }
+
+        //apending all the created rows to the calendar container
+        row.append([hourLine, textBox, save])
+        $(".container").append(row);
+      }
       
     </script>
 
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   </body>
 </html>
