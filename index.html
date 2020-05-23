@@ -58,7 +58,7 @@
         let hourLine = $("<div>").addClass(['hour','col-md-1']);
 
         //creating the savebutton column to add to the div & applying CSS to style it using classes
-        let save = $("<div>").addClass(['saveBtn','col-md-1']);
+        let save = $("<div>").addClass(['saveBtn','col-md-1']).text('save');
 
         //creating the textbox column so that we can add text to the calendar & applying CSS style using classes
         let textBox = $("<textarea>").addClass(['description','col-md-10']);
@@ -87,7 +87,7 @@
           let hourId = $(this).parent().attr('id');
           localStorage.setItem(hourId, valueTextBox);
         })
-        
+
         //displaying the text in the textbox after saving
         if (localStorage.getItem('hour-' + i) != null){
           textBox.text(localStorage.getItem('hour-'+i));
